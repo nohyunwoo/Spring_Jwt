@@ -9,15 +9,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Controller
+// 생성자 자동 주입
 @RequiredArgsConstructor
 public class ItemController {
-
     // 원하는 클래스에 repository 등록
     private final ItemRepository itemRepository;
+    // 사용할 곳에 변수로 등록
+    private final ItemService itemService;
+
+
     @GetMapping("/list")
     String showList(Model model){
-        List<Item> result = itemRepository.findAll();
-        model.addAttribute("item", result);
+        model.addAttribute("item", itemService.listItem());
         return "list.html";
     }
 
@@ -27,16 +30,29 @@ public class ItemController {
     }
 
     @GetMapping("/detail/{id}")
-    String detail(@PathVariable long id, Model model) throws Exception {
-        Optional<Item> byId = itemRepository.findById(id);
-
-        throw new Exception();
+    String detail(@PathVariable long id, Model model) {
+        if (itemService.findObjectId(id).isPresent()) {
+            model.addAttribute("item",itemService.findObjectId(id).get());
+            return "detail.html";
+        } else {
+            return "redirect:/list";
+        }
     }
 
     @PostMapping("/add")
-    String addPost(@ModelAttribute Item item) { // String title, Integer price
-        itemRepository.save(item);
+    String addPost(String title, Integer price) { // String title, Integer price
+        itemService.saveItem(title, price);
         return "redirect:/list";
+    }
+
+    @PostMapping("/update/{id}")
+    String update(@PathVariable Long id, Model model){
+        if (itemService.findObjectId(id).isPresent()) {
+            model.addAttribute("upItem",itemService.findObjectId(id).get());
+            return "update.html";
+        } else {
+            return "redirect:/detail/{id}";
+        }
     }
 
 
