@@ -1,4 +1,4 @@
-package com.apple.shop;
+package com.apple.shop.Item;
 
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +22,13 @@ public class ItemService {
         item.setPrice(price);
         itemRepository.save(item);
     }
+    public void updateItem(Long id, String title, Integer price){
+        Item item = new Item();
+        item.setId(id);
+        item.setTitle(title);
+        item.setPrice(price);
+        itemRepository.save(item);
+    }
 
     // List 나열
     public List<Item> listItem(){
@@ -29,7 +36,7 @@ public class ItemService {
     }
 
     // 해당 id 객체 찾기
-    public Optional<Item> findObjectId(long id){
+    public Optional<Item> findObjectId(Long id){
         return itemRepository.findById(id);
     }
 

@@ -10,7 +10,7 @@ version = '0.0.1-SNAPSHOT'
 // 자바 버전 맞추기
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(23)
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 

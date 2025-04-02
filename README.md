@@ -91,7 +91,18 @@ class에 붙이면 ORM에서는 이런 이름으로 테이블을 생성해준다
 # static
 static을 붙이면 클래스, 변수 이렇게 직접 사용 가능
 
+# Ajax
+        document.querySelectorAll('.btn')[0].addEventListener('click', function(){
+            fetch('/test1', {
+                method: 'POST',
+                headers : { 'Content-Type' : 'application/json' },
+                body: JSON.stringify({name : 'kim'})
+            })
+        })
 
-
+                 document.querySelectorAll('.btn')[0].addEventListener('click', function(){
+            fetch('/test1?이름=값&이름2=값2')
+        })
+두 번째는, test1로 get 요청 날리면 이름=값, 이름2=값2 데이터 전송
 
 
