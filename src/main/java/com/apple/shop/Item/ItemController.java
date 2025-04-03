@@ -66,6 +66,13 @@ public class ItemController {
         return "redirect:/list";
     }
 
+    @DeleteMapping("/delete")
+    @ResponseBody
+    String delList(@RequestParam Long id) { // String title, Integer price
+        itemService.deleteItem(id);
+        return "Deleted item with id: " + id;
+    }
+
     @PostMapping("/update/{id}")
     String updateId(@PathVariable Long id, Model model){
         if (itemService.findObjectId(id).isPresent()) {

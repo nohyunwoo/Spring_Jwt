@@ -20,18 +20,19 @@
                 <h4 th:text="${i.title}"></h4>
             </a>
             <p th:text="${i.price}"></p>
-            <a th:href="@{'/update/'+ ${i.id} }">수정</a>
-            <span onclick="fetch()"></span>
+            <a th:href="@{'/update/'+ ${i.id} }">수정</a><br>
+            <button th:onclick="deleteItem([[${i.id}]])">삭제</button>
         </div>
     </div>
 
-    <button class="btn">버튼</button>
-
     <script>
-        document.querySelectorAll('.btn')[0].addEventListener('click', function(){
-            fetch('/test1?name=노현우&age=26')
-        })
-
+        function deleteItem(id) {
+            fetch(`/delete?id=${id}`, { method:'DELETE' })
+            .then((res) => res.text())
+            .then((data) => console.log(data))
+            .catch((err) => console.error("Error:", err))
+            .then(() => location.reload());
+        }
     </script>
 </body>
 </html>

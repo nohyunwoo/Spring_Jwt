@@ -29,6 +29,11 @@ public class ItemService {
         item.setPrice(price);
         itemRepository.save(item);
     }
+    public void deleteItem(Long id){
+        Item item = new Item();
+        item.setId(id);
+        itemRepository.delete(item);
+    }
 
     // List 나열
     public List<Item> listItem(){
