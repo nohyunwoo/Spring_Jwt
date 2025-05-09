@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Map;
 
@@ -18,18 +20,18 @@ public class ItemController {
 
 
     @GetMapping("/list")
-    String showList(Model model){
+    public String showList(Model model){
         model.addAttribute("item", itemService.listItem());
         return "list.html";
     }
 
     @GetMapping("/write")
-    String write(){
+    public String write(){
         return "write.html";
     }
 
     @GetMapping("/detail/{id}")
-    String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable Long id, Model model) {
         if (itemService.findObjectId(id).isPresent()) {
             model.addAttribute("item",itemService.findObjectId(id).get());
             return "detail.html";
@@ -39,7 +41,7 @@ public class ItemController {
     }
 
     @GetMapping("/update/{id}")
-    String getUpdateId(@PathVariable Long id, Model model){
+    public String getUpdateId(@PathVariable Long id, Model model){
         if (itemService.findObjectId(id).isPresent()) {
             model.addAttribute("upItem",itemService.findObjectId(id).get());
             return "update.html";
@@ -49,7 +51,7 @@ public class ItemController {
     }
 
     @GetMapping("/test1")
-    String test(@RequestParam String name, @RequestParam Integer age){
+    public String test(@RequestParam String name, @RequestParam Integer age){
         System.out.println(name + age);
         return "redirect:/list";
     }
@@ -61,20 +63,22 @@ public class ItemController {
 //    }
 
     @PostMapping("/add")
-    String addPost(String title, Integer price) { // String title, Integer price
-        itemService.saveItem(title, price);
+    public String addPost(String title, Integer price) { // String title, Integer price
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        itemService.saveItem(title, price, username);
         return "redirect:/list";
     }
 
     @DeleteMapping("/delete")
     @ResponseBody
-    String delList(@RequestParam Long id) { // String title, Integer price
+    public String delList(@RequestParam Long id) { // String title, Integer price
         itemService.deleteItem(id);
         return "Deleted item with id: " + id;
     }
 
     @PostMapping("/update/{id}")
-    String updateId(@PathVariable Long id, Model model){
+    public String updateId(@PathVariable Long id, Model model){
         if (itemService.findObjectId(id).isPresent()) {
             model.addAttribute("upItem",itemService.findObjectId(id).get());
             return "update.html";
@@ -84,7 +88,7 @@ public class ItemController {
     }
 
     @PostMapping("/update")
-    String update(@RequestParam Long id, @RequestParam String title, @RequestParam Integer price){
+    public String update(@RequestParam Long id, @RequestParam String title, @RequestParam Integer price){
         if (itemService.findObjectId(id).isPresent()) {
             itemService.updateItem(id, title, price);
             return "redirect:/list";

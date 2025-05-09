@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href = "/main.css" rel="stylesheet">
+
+</head>
+<body>
+
+  <div th:replace="~{ nav.html :: navbar}"></div>
+
+  <h3>Welcome 마이 페이지!</h3>
+
+  <div sec:authentication="principal"></div>
+  <div ser:authorize="hasAuthority('일반유저')"></div>
+  <div sec:authorize="isAuthenticated()">
+    로그인된 사람만 보여주쇼
+  </div>
+
+</body>
+</html>

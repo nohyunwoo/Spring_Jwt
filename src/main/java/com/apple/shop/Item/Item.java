@@ -17,6 +17,7 @@ public class Item {
 
     private Integer price;
 
+    private String username;
 
 
 }

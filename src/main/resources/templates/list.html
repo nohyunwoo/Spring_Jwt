@@ -20,6 +20,7 @@
                 <h4 th:text="${i.title}"></h4>
             </a>
             <p th:text="${i.price}"></p>
+            <p th:text="${i.username}"></p>
             <a th:href="@{'/update/'+ ${i. id} }">수정</a><br>
             <button th:onclick="deleteItem([[${i.id}]])">삭제</button>
         </div>

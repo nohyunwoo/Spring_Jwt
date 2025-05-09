@@ -16,10 +16,11 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     // DB 저장
-    public void saveItem(String title, Integer price){
+    public void saveItem(String title, Integer price, String username){
         Item item = new Item();
         item.setTitle(title);
         item.setPrice(price);
+        item.setUsername(username);
         itemRepository.save(item);
     }
     public void updateItem(Long id, String title, Integer price){
