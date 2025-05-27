@@ -13,6 +13,11 @@
 
     <div th:replace="~{ nav.html :: navbar}"></div>
 
+    <form action="/search" method="GET">
+        <input name="searchText" style="display : inline">
+        <button>검색</button>
+    </form>
+
     <div class = "card" th:each=" i :${item}">
         <img src ="https://placehold.co/300" alt="My Local Image" width="150" height="200">
         <div>
@@ -21,9 +26,31 @@
             </a>
             <p th:text="${i.price}"></p>
             <p th:text="${i.username}"></p>
-            <a th:href="@{'/update/'+ ${i. id} }">수정</a><br>
+            <a th:href="@{'/update/'+ ${i.id} }">수정</a><br>
             <button th:onclick="deleteItem([[${i.id}]])">삭제</button>
         </div>
+    </div>
+
+    <!-- 아이템 목록 표시 후 -->
+    <div class="pagination" th:if="${totalPages > 0}">
+        <ul>
+            <!-- 이전 페이지 -->
+            <li th:if="${currentPage > 1}">
+                <a th:href="@{/list/page/{page}(page=${currentPage - 1})}">이전</a>
+            </li>
+
+            <!-- 페이지 번호 -->
+            <li th:each="pageNumber : ${#numbers.sequence(1, totalPages)}"
+                th:class="${pageNumber == currentPage} ? 'active' : ''">
+                <a th:href="@{/list/page/{page}(page=${pageNumber})}"
+                   th:text="${pageNumber}">1</a>
+            </li>
+
+            <!-- 다음 페이지 -->
+            <li th:if="${currentPage < totalPages}">
+                <a th:href="@{/list/page/{page}(page=${currentPage + 1})}">다음</a>
+            </li>
+        </ul>
     </div>
 
     <script>
@@ -35,5 +62,7 @@
             .then(() => location.reload());
         }
     </script>
+
+
 </body>
 </html>

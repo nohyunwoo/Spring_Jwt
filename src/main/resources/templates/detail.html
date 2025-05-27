@@ -18,8 +18,35 @@
         <h4 th:text="${item.title}">제목</h4>
         <p th:text="${item.price + '원'}">가격</p>
     </div>
+
     <form th:action="@{/update/{id}(id=${item.id})}" method="POST">
         <button type="submit">수정</button>
+    </form>
+
+    <form action="/order" method="POST">
+        <input name="title" th:value="${item.title}">
+        <input name="price" th:value="${item.price}">
+        <input name="count" placeholder="count">
+        <button type="submit" style="text-align : left">담기</button>
+    </form>
+
+    <form action="/comment" method="POST">
+        <input name="comment" placeholder="comment" style="display : inline">
+        <input name="parent" th:value="${item.id}" style="display : none">
+        <button type="submit">전송</button>
+    </form>
+    <form>
+        <h1 th:text="${item.title}">아이템 제목</h1>
+
+        <hr>
+
+        <h2>댓글 목록</h2>
+        <ul>
+            <li th:each="comment : ${comment}">
+                <strong th:text="${comment.username}">작성자</strong>:
+                <span th:text="${comment.content}">댓글 내용</span>
+            </li>
+        </ul>
     </form>
 
 </body>

@@ -33,6 +33,7 @@ public class MyUserDetailService implements UserDetailsService {
 
         CustomUser customUser = new CustomUser(user.getUsername(), user.getPassword(), authorities);
         customUser.displayName = user.getDisplayName();
+        customUser.id = user.getId();
 
         // return new User(유저아이디, 비번, 권한) 해주세요
         return customUser;
@@ -41,11 +42,4 @@ public class MyUserDetailService implements UserDetailsService {
     }
 }
 
-class CustomUser extends User{
-    public String displayName;
-    public CustomUser(String username, String password,
-                      Collection<? extends GrantedAuthority> authorities)
-        {
-        super(username, password, authorities);
-        }
-    }
+

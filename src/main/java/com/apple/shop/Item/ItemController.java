@@ -1,12 +1,17 @@
 package com.apple.shop.Item;
 
+import com.apple.shop.comment.Comment;
+import com.apple.shop.comment.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -17,6 +22,8 @@ public class ItemController {
     private final ItemRepository itemRepository;
     // 사용할 곳에 변수로 등록
     private final ItemService itemService;
+
+    private final CommentRepository commentRepository;
 
 
     @GetMapping("/list")
@@ -32,11 +39,14 @@ public class ItemController {
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable Long id, Model model) {
+
+        List<Comment> byParentId = commentRepository.findByParentId(id);
         if (itemService.findObjectId(id).isPresent()) {
             model.addAttribute("item",itemService.findObjectId(id).get());
+            model.addAttribute("comment",byParentId);
             return "detail.html";
         } else {
-            return "redirect:/list";
+            return "redirect:/detail/{id}";
         }
     }
 
@@ -55,12 +65,6 @@ public class ItemController {
         System.out.println(name + age);
         return "redirect:/list";
     }
-
-//    @PostMapping("/test1")
-//    String test1(@RequestBody Map<String, Object> body){
-//        System.out.println(body.get("name"));
-//        return "redirect:/list";
-//    }
 
     @PostMapping("/add")
     public String addPost(String title, Integer price) { // String title, Integer price
@@ -95,6 +99,29 @@ public class ItemController {
         } else {
             return "redirect:/detail/{id}";
         }
+    }
+
+    @GetMapping("/list/page/{n}")
+    public String getList(Model model, @PathVariable Integer n){
+        Page<Item> result = itemRepository.findPageBy(PageRequest.of(n-1, 5));
+        model.addAttribute("item", result);
+        model.addAttribute("currentPage", n);
+        model.addAttribute("totalPages", result.getTotalPages());
+        return "list.html";
+    }
+
+    @GetMapping("/search")
+    public String postSearch(@RequestParam String searchText, Model model){
+        List<Item> allByTitleContains;
+        if (searchText != null && !searchText.isEmpty()) {
+            allByTitleContains = itemRepository.rawQuery1(searchText);
+        }
+        else {
+            allByTitleContains = itemRepository.findAll();
+        }
+
+        model.addAttribute("item", allByTitleContains);
+        return "list.html";
     }
 
 }

@@ -48,3 +48,36 @@ input {
   display : block;
   margin : auto;
 }
+.pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination ul {
+        display: flex;
+        list-style: none;
+        padding: 0;
+    }
+
+    .pagination li {
+        margin: 0 5px;
+    }
+
+    .pagination li a {
+        display: block;
+        padding: 5px 10px;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        color: #333;
+    }
+
+    .pagination li.active a {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .pagination li a:hover:not(.active) {
+        background-color: #f1f1f1;
+    }

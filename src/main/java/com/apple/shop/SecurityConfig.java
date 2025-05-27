@@ -27,8 +27,9 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
         }
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            http.csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository())
-                    .ignoringRequestMatchers("/login")
+//            http.csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository())
+////                    .ignoringRequestMatchers("/login", "/comment", "/logout"));
+            http.csrf(csrf -> csrf.disable()
             );
             // /**(모든 경로)에 대해 누구나 접근 허용 (permitAll())
             // 로그인하지 않아도 /list, /login, /api/... 등 모든 URL 접근 가능
@@ -38,7 +39,7 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
             // form으로 로그인하겠다.
             http.formLogin((formLogin)
                             -> formLogin.loginPage("/login") // 로그인 폼을 내가 만든 /login 페이지로 대체
-                            .defaultSuccessUrl("/list") // .defaultSuccessUrl("/list")
+                            .defaultSuccessUrl("/list/page/1") // .defaultSuccessUrl("/list")
 
                     );
             http.logout(logout -> logout
